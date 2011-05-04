@@ -2,11 +2,11 @@
 Summary: PostScript and PDF previewer
 Name: 	 gsview
 Version: 4.9
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 License: AFPL
 Group: 	 Applications/Publishing
-Source:  ftp://mirror.cs.wisc.edu/pub/mirrors/ghost/ghostgum/gsview-%{version}.tar.gz
+Source:  http://mirror.cs.wisc.edu/pub/mirrors/ghost/ghostgum/gsview-%{version}.tar.gz
 URL: 	 http://www.cs.wisc.edu/~ghost/gsview/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
 
@@ -17,11 +17,8 @@ BuildRequires: desktop-file-utils
 BuildRequires: sed >= 4.0
 BuildRequires: ghostscript-devel >= 7.07-15.3
 %global gs_ver  %(gs --version 2> /dev/null | cut -d. -f-2 )
-%global gs_ver1 %(echo %{gs_ver} | cut -d. -f1 )
-%if 0%{?gs_ver1} == 7
-# See http://www.redhat.com/archives/fedora-devel-list/2004-August/msg00068.html
+
 Requires: ghostscript >= 7.07-15.3
-%endif
 Requires: xdg-utils
 
 ## Use xdg-open instead of hard-coded mozilla
@@ -131,6 +128,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed May 04 2011 Rex Dieter <rdieter@fedoraproject.org> 4.9-3
+- Recompile gsview against newer ghostscript (#1737)
+
 * Wed Nov 11 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 4.9-2
 - rebuild after movement to RPM Fusion nonfree
 
