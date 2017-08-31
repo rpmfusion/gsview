@@ -2,7 +2,7 @@
 Summary: PostScript and PDF previewer
 Name: 	 gsview
 Version: 4.9
-Release: 6%{?dist}
+Release: 7%{?dist}
 
 License: AFPL
 Group: 	 Applications/Publishing
@@ -128,6 +128,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 4.9-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Sun Aug 31 2014 Sérgio Basto <sergio@serjux.com> - 4.9-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
