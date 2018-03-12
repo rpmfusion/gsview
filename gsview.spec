@@ -2,13 +2,12 @@
 Summary: PostScript and PDF previewer
 Name: 	 gsview
 Version: 4.9
-Release: 8%{?dist}
+Release: 9%{?dist}
 
 License: AFPL
 Group: 	 Applications/Publishing
 Source:  http://mirror.cs.wisc.edu/pub/mirrors/ghost/ghostgum/gsview-%{version}.tar.gz
-URL: 	 http://www.cs.wisc.edu/~ghost/gsview/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
+URL: 	 http://www.cs.wisc.edu/~ghost/gsview/ 
 
 Source1: gsview.desktop
 
@@ -16,6 +15,8 @@ BuildRequires: gtk+-devel
 BuildRequires: desktop-file-utils
 BuildRequires: sed >= 4.0
 BuildRequires: ghostscript-devel >= 7.07-15.3
+# Needed because ghostscript-devel has been replaced by libgs-devel in f28
+BuildRequires: ghostscript
 %global gs_ver  %(gs --version 2> /dev/null | cut -d. -f-2 )
 
 Requires: ghostscript >= 7.07-15.3
@@ -71,8 +72,6 @@ make -f srcunx/unx.mak \
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_mandir},%{_docdir},%{_sysconfdir}}
 
 make -f srcunx/unx.mak install \
@@ -91,43 +90,19 @@ desktop-file-install \
   --vendor="" \
   %{SOURCE1} 
 
-## Unpackaged files
-# nuke deprecated epstool, when (hopefully) packaged separately... someday.
-#rm -f $RPM_BUILD_ROOT{%{_bindir}/epstool,%{_docdir}/*/epstool*}
-
-
-%post
-touch --no-create %{_datadir}/icons/hicolor &> /dev/null ||:
-
-%postun
-if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/hicolor &> /dev/null ||:
-gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null ||:
-update-desktop-database -q %{_datadir}/applications > /dev/null 2>&1 || :
-
-fi
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null ||:
-update-desktop-database -q %{_datadir}/applications > /dev/null 2>&1 || :
-
-
 %files
-%defattr(-, root, root)
+%doc %{_docdir}/*
 %{_bindir}/*
 %dir %{_sysconfdir}/gsview
 %config(noreplace) %{_sysconfdir}/gsview/printer.ini
 %{_mandir}/man*/*
 %{_datadir}/applications/*.desktop
-%{_datadir}/icons/hicolor/*/*/*
-%doc %{_docdir}/* 
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
+%{_datadir}/icons/hicolor/*/*/* 
 
 %changelog
+* Mon Mar 12 2018 Leigh Scott <leigh123linux@googlemail.com> - 4.9-9
+- Clean and fix
+
 * Fri Mar 02 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 4.9-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
