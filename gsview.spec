@@ -2,7 +2,7 @@
 Summary: PostScript and PDF previewer
 Name: 	 gsview
 Version: 4.9
-Release: 11%{?dist}
+Release: 12%{?dist}
 
 License: AFPL
 Group: 	 Applications/Publishing
@@ -100,6 +100,9 @@ desktop-file-install \
 %{_datadir}/icons/hicolor/*/*/* 
 
 %changelog
+* Tue Mar 05 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 4.9-12
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Sun Aug 19 2018 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 4.9-11
 - Rebuilt for Fedora 29 Mass Rebuild binutils issue
 
