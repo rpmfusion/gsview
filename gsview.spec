@@ -11,6 +11,7 @@ URL: 	 http://www.cs.wisc.edu/~ghost/gsview/
 
 Source1: gsview.desktop
 
+BuildRequires: gcc
 BuildRequires: gtk+-devel
 BuildRequires: desktop-file-utils
 BuildRequires: sed >= 4.0
