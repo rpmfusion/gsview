@@ -1,13 +1,15 @@
+%global tag v5.01beta
 
 Summary: PostScript and PDF previewer
 Name: 	 gsview
-Version: 4.9
-Release: 18%{?dist}
+Version: 5.01~beta
+Release: 1%{?dist}
 
-License: AFPL
+License: GPLv3
 Group: 	 Applications/Publishing
-Source:  http://mirror.cs.wisc.edu/pub/mirrors/ghost/ghostgum/gsview-%{version}.tar.gz
-URL: 	 http://www.cs.wisc.edu/~ghost/gsview/ 
+URL: 	 http://www.ghostgum.com.au/
+# wget --content-disposition "https://git.ghostscript.com/?p=user/ghostgum/gsview.git;a=snapshot;h=refs/tags/v5.01beta;sf=tgz"
+Source0: gsview-v5.01beta.tar.gz
 
 Source1: gsview.desktop
 
@@ -32,23 +34,25 @@ Patch2: gsview-4.8-libgs.patch
 Patch3: gsview-4.7-dllversion.patch
 # Change Paper default A4 -> Letter
 Patch4: gsview-4.7-letterpaper.patch
+Patch5: 0001-Updates-for-registraton-removal-in-the-unix-specific.patch
 
 
 %description
 GSview is a graphical interface for Ghostscript.
-Ghostscript is an interpreter for the PostScript page 
+Ghostscript is an interpreter for the PostScript page
 description language used by laser printers.
-For documents following the Adobe PostScript Document Structuring 
+For documents following the Adobe PostScript Document Structuring
 Conventions, GSview allows selected pages to be viewed or printed.
 
 
 %prep
-%setup -q 
+%setup -q -n %{name}-%{tag}
 
 %patch1 -p1 -b .xdg_open
 # patch2 bits below
 %patch3 -p1 -b .dllversion
 %patch4 -p1 -b .letterpaper
+%patch5 -p1
 
 # Determine GS_REVISION/SOMAJOR and substitute values (see patch2)
 %patch2 -p1 -b .libgs
@@ -89,7 +93,7 @@ install -D -p -m644 binary/gsview48.png\
 desktop-file-install \
   --dir="$RPM_BUILD_ROOT%{_datadir}/applications" \
   --vendor="" \
-  %{SOURCE1} 
+  %{SOURCE1}
 
 %files
 %doc %{_docdir}/*
@@ -98,9 +102,12 @@ desktop-file-install \
 %config(noreplace) %{_sysconfdir}/gsview/printer.ini
 %{_mandir}/man*/*
 %{_datadir}/applications/*.desktop
-%{_datadir}/icons/hicolor/*/*/* 
+%{_datadir}/icons/hicolor/*/*/*
 
 %changelog
+* Wed May 25 2022 Sérgio Basto <sergio@serjux.com> - 5.01~beta-1
+- 5.01beta  (what a waste of time) doesn't work
+
 * Thu Feb 10 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 4.9-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 

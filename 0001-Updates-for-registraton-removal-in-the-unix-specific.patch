@@ -1,0 +1,60 @@
+From df97e2eaa0c1b39848dcd45d034a75ed7733aebd Mon Sep 17 00:00:00 2001
+From: Hin-Tak Leung <htl10@users.sourceforge.net>
+Date: Sun, 22 May 2022 03:27:18 +0100
+Subject: [PATCH] Updates for registraton removal in the unix-specific code
+ path
+
+Signed-off-by: Hin-Tak Leung <htl10@users.sourceforge.net>
+---
+ srcunx/gvx.c    | 2 --
+ srcunx/gvxdlg.c | 8 ++------
+ 2 files changed, 2 insertions(+), 8 deletions(-)
+
+diff --git a/srcunx/gvx.c b/srcunx/gvx.c
+index 415f6f9..a8d9c84 100644
+--- a/srcunx/gvx.c
++++ b/srcunx/gvx.c
+@@ -1924,8 +1924,6 @@ do_args(gpointer data)
+ 	return TRUE;
+     }
+ 
+-    registration_check();
+-
+     /* 
+      * we had some command line options that couldn't be
+      * be processed until the window was created.
+diff --git a/srcunx/gvxdlg.c b/srcunx/gvxdlg.c
+index 90fe31b..267592f 100644
+--- a/srcunx/gvxdlg.c
++++ b/srcunx/gvxdlg.c
+@@ -725,12 +725,8 @@ void show_about(void)
+ /*
+ ICON ID_GSVIEW, ABOUT_ICON, 8, 8, 18, 20
+ */
+-    sprintf(buf, "%s  %s", get_string(IDS_AAREGTOC), registration_name);
+-    add_about(vbox, buf);
+-    strcpy(buf, get_string(IDS_AANUMBERC));
+-    if (registration_receipt != 0)
+-	sprintf(buf, "%s  %u", get_string(IDS_AANUMBERC), registration_receipt);
+-    add_about(vbox, buf);
++    add_about(vbox, "");
++    add_about(vbox, "");
+ 
+     /* Create and place OK button at the bottom */
+     button_ok = gtk_button_new_with_label(get_string(IDS_AAOK));
+-- 
+2.35.3
+
+diff --git a/src/gvcver.h b/src/gvcver.h
+index e4017ab..eae0b5c 100644
+--- a/src/gvcver.h
++++ b/src/gvcver.h
+@@ -35,7 +35,7 @@
+ /* undefine BETA for a final release */
+ /*
+ */
+-#define BETA
++#undef BETA
+ #define BETA_YEAR    2020
+ #define BETA_MONTH   12
+ #define BETA_DAY     30

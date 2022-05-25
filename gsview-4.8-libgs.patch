@@ -2,11 +2,11 @@
 +++ gsview-4.8/src/gvcver.h	2006-05-07 20:43:57.000000000 -0500
 @@ -57,7 +57,7 @@
  /* Ghostscript */
- #define GS_PRODUCT  "AFPL Ghostscript"
+ #define GS_PRODUCT  "Ghostscript"
  #define GS_REVISION_MIN   704
 -#define GS_REVISION	  704
 +#define GS_REVISION	  @@GS_REVISION@@ 
- #define GS_REVISION_MAX   999
+ #define GS_REVISION_MAX   10990
  
  #ifdef _Windows
 @@ -76,7 +76,7 @@
