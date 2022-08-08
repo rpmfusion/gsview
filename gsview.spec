@@ -3,7 +3,7 @@
 Summary: PostScript and PDF previewer
 Name: 	 gsview
 Version: 5.01~beta
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 License: GPLv3
 Group: 	 Applications/Publishing
@@ -105,6 +105,10 @@ desktop-file-install \
 %{_datadir}/icons/hicolor/*/*/*
 
 %changelog
+* Mon Aug 08 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 5.01~beta-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
+  5.1
+
 * Wed May 25 2022 Sérgio Basto <sergio@serjux.com> - 5.01~beta-1
 - 5.01beta  (what a waste of time) doesn't work
 
