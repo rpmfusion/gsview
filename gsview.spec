@@ -1,9 +1,10 @@
 %global tag v5.01beta
+%global libgspath %{_libdir}/libgs.so.{?,??}
 
 Summary: PostScript and PDF previewer
 Name: 	 gsview
 Version: 5.01~beta
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 License: GPLv3
 Group: 	 Applications/Publishing
@@ -36,7 +37,6 @@ Patch3: gsview-4.7-dllversion.patch
 Patch4: gsview-4.7-letterpaper.patch
 Patch5: 0001-Updates-for-registraton-removal-in-the-unix-specific.patch
 
-
 %description
 GSview is a graphical interface for Ghostscript.
 Ghostscript is an interpreter for the PostScript page
@@ -44,27 +44,19 @@ description language used by laser printers.
 For documents following the Adobe PostScript Document Structuring
 Conventions, GSview allows selected pages to be viewed or printed.
 
-
 %prep
-%setup -q -n %{name}-%{tag}
+%autosetup -n %{name}-%{tag} -p1
 
-%patch1 -p1 -b .xdg_open
-# patch2 bits below
-%patch3 -p1 -b .dllversion
-%patch4 -p1 -b .letterpaper
-%patch5 -p1
-
-# Determine GS_REVISION/SOMAJOR and substitute values (see patch2)
-%patch2 -p1 -b .libgs
 GS_REVISION=%(echo %{gs_ver} | tr -d '.' )
 sed -i -e "s|@@GS_REVISION@@|${GS_REVISION}|g" src/gvcver.h
-# Sanity check to make sure file exists
-if [ ! -f "%(ls %{_libdir}/libgs.so.?)" ]; then
-  echo "Error: %{_libdir}/libgs.so.? doesn't exist"; exit 1
-fi
-SOMAJOR=$(basename %{_libdir}/libgs.so.? | sed -e 's@libgs.so.@@' )
-sed -i -e "s|@@SOMAJOR@@|${SOMAJOR}|g" src/gvcver.h
 
+# Sanity check to make sure file exists
+if [ ! -f "%(ls %{libgspath})" ]; then
+  echo "Error: %{libgspath} does not exist"; exit 1
+fi
+
+SOMAJOR=$(basename %{libgspath} | sed -e 's@libgs.so.@@' )
+sed -i -e "s|@@SOMAJOR@@|${SOMAJOR}|g" src/gvcver.h
 
 %build
 make -f srcunx/unx.mak \
@@ -74,7 +66,6 @@ make -f srcunx/unx.mak \
   GSVIEW_MANDIR=%{_mandir} \
   GSVIEW_DOCPATH=%{_docdir} \
   GSVIEW_ETCPATH=%{_sysconfdir}
-
 
 %install
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_mandir},%{_docdir},%{_sysconfdir}}
@@ -105,6 +96,10 @@ desktop-file-install \
 %{_datadir}/icons/hicolor/*/*/*
 
 %changelog
+* Fri Aug 11 2023 Andrew Bauer <zonexpertconsulting@outlook.com> - 5.01~beta-4
+- Fix check for libgs.so to allow for two digit rev
+- use autosetup macro
+
 * Thu Aug 03 2023 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 5.01~beta-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
 
