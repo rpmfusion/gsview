@@ -4,14 +4,13 @@
 Summary: PostScript and PDF previewer
 Name: 	 gsview
 Version: 5.01~beta
-Release: 4%{?dist}
+Release: 5%{?dist}
 
 License: GPLv3
 Group: 	 Applications/Publishing
 URL: 	 http://www.ghostgum.com.au/
 # wget --content-disposition "https://git.ghostscript.com/?p=user/ghostgum/gsview.git;a=snapshot;h=refs/tags/v5.01beta;sf=tgz"
 Source0: gsview-v5.01beta.tar.gz
-
 Source1: gsview.desktop
 
 BuildRequires: gcc
@@ -50,9 +49,13 @@ Conventions, GSview allows selected pages to be viewed or printed.
 GS_REVISION=%(echo %{gs_ver} | tr -d '.' )
 sed -i -e "s|@@GS_REVISION@@|${GS_REVISION}|g" src/gvcver.h
 
-# Sanity check to make sure file exists
-if [ ! -f "%(ls %{libgspath})" ]; then
-  echo "Error: %{libgspath} does not exist"; exit 1
+# Sanity check to make sure libgs.so exists
+libgs=$(ls %{libgspath} 2>/dev/null || true)
+if [ -f "$libgs" ]; then
+  echo Found ${libgs}. Proceeding...
+else
+  echo Error: %{libgspath} not found. Aborting...
+  exit 1
 fi
 
 SOMAJOR=$(basename %{libgspath} | sed -e 's@libgs.so.@@' )
@@ -96,6 +99,9 @@ desktop-file-install \
 %{_datadir}/icons/hicolor/*/*/*
 
 %changelog
+* Fri Aug 11 2023 Andrew Bauer <zonexpertconsulting@outlook.com> - 5.01~beta-4
+- fix check for libgs.so to avoid spurious output
+
 * Fri Aug 11 2023 Andrew Bauer <zonexpertconsulting@outlook.com> - 5.01~beta-4
 - Fix check for libgs.so to allow for two digit rev
 - use autosetup macro
